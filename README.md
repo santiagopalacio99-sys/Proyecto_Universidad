@@ -54,11 +54,11 @@ proyecto_universidad/
 1. Instalar [Python 3](https://www.python.org/downloads/) (el proyecto no usa librerías externas).
 2. Clonar el repositorio:
    ```
-   git clone <enlace-del-repositorio>
+   git clone https://github.com/santiagopalacio99-sys/Proyecto_Universidad.git
    ```
 3. Entrar a la carpeta del proyecto:
    ```
-   cd <nombre-de-la-carpeta>
+   cd Proyecto_Universidad
    ```
 4. Ejecutar el archivo principal:
    ```
