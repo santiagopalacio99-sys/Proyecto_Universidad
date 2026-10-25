@@ -16,10 +16,10 @@ class Catalogo:
         for asignatura in self._asignaturas:
             if asignatura.get_codigo()==codigo:
                 return asignatura
-        raise AsignaturaNoEncontradaError(f"No existe una asigntura con el código {codigo}")
+        raise AsignaturaNoEncontradaError(f"No existe una asignatura con el código {codigo}")
 
     def buscar_programa(self, codigo):
         for programa in self._programas:
             if programa.get_codigo()==codigo:
                 return programa
-            raise ProgramaNoEncontradoError(f"No existe ningun programa con el código {codigo}")
+            raise ProgramaNoEncontradoError(f"No existe ningún programa académico con el código {codigo}")
