@@ -7,6 +7,9 @@ from asignatura import Asignatura
 from estudiante import Estudiante
 from docente import Docente
 from administrativo import Administrativo
+from persona import Persona
+from horario import Horario
+from grupo_academico import GrupoAcademico
 
 sistemas = ProgramaAcademico("ISIS01", "Ingeniería de Sistemas", "Ingeniería", 10)
 sistemas.mostrar_informacion()
@@ -61,4 +64,16 @@ try:
 except ValueError as error:
     print("Error:", error)
     print("Créditos actuales:", ciberseguridad.get_numero_creditos())
-    
+
+    print("Prueba 1: crear una persona directamente")
+    try:
+        persona_general = persona("1000000", "Ana", "ana@gmail.com")
+    except TypeError:
+        print ("Error: no se puede crear una persona directamente, debe ser docente, estudiante o administrativo ")
+
+horario_prueba = Horario("Lunes", 8, 9, "Salón 203")
+print(horario_prueba.get_dia(), horario_prueba.get_hora_inicio(), horario_prueba.get_hora_fin(), horario_prueba.get_salon())
+
+horario1 = Horario("Lunes", 8, 10, "Salón 203")
+grupo1 = GrupoAcademico("G01", ciberseguridad, personas[2], 30, horario1)
+grupo1.mostrar_informacion_grupo()

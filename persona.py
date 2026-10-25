@@ -1,4 +1,6 @@
-class Persona:
+from abc import ABC, abstractclassmethod
+
+class Persona(ABC):
     """Representa a una persona vinculada a la universidad.
     Guarda identificación, nombre y email como atributos privados."""
 
@@ -48,5 +50,5 @@ class Persona:
         print(f"email: {self._email}")
 
     def realizar_actividad_principal(self):
-        """Muestra un mensaje general. Las clases hijas lo sobreescriben."""
-        print("No tiene una actividad especifica asignada")
+        """Método abstracto: cada clase especializada define su actividad principal."""
+        pass

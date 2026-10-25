@@ -23,24 +23,24 @@ class Docente(Empleado):
         """Devuelve las horas semanales."""
         return self._horas_semanales
 
-    def set_facultad(self, nueva_facultad):
+    def set_facultad(self, facultad):
         """Cambia la facultad. Lanza ValueError si está vacía."""
-        if nueva_facultad.strip() !="":
-            self._facultad = nueva_facultad
+        if facultad.strip() !="":
+            self._facultad = facultad
         else:
             raise ValueError("El campo facultad no puede estar vacío")
 
-    def set_tipo_contrato(self, nuevo_tipo_contrato):
+    def set_tipo_contrato(self, tipo_contrato):
         """Cambia el tipo de contratación. Lanza ValueError si está vacío."""
-        if nuevo_tipo_contrato.strip() !="":
-            self._tipo_contrato = nuevo_tipo_contrato
+        if tipo_contrato.strip() !="":
+            self._tipo_contrato = tipo_contrato
         else:
             raise ValueError("El campo contrato no puede estar vacío")
 
-    def set_horas_semanales(self, nuevas_horas_semanales):
+    def set_horas_semanales(self, horas_semanales):
         """Cambia las horas semanales. Lanza ValueError si no son mayores que cero."""
-        if nuevas_horas_semanales >0:
-            self._horas_semanales = nuevas_horas_semanales
+        if horas_semanales >0:
+            self._horas_semanales = horas_semanales
         else:
             raise ValueError("Las horas semanales deben ser mayor a 0")
 
