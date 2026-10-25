@@ -27,31 +27,31 @@ class Asignatura:
         """Devuelve el objeto ProgramaAcademico al que pertenece."""
         return self._programa
 
-    def set_codigo(self, nuevo_codigo):
+    def set_codigo(self, codigo):
         """Cambia el código. Lanza ValueError si está vacío."""
-        if nuevo_codigo.strip() !="":
-            self._codigo = nuevo_codigo
+        if codigo.strip() !="":
+            self._codigo = codigo
         else:
             raise ValueError("El nuevo codigo no puede estar vacío")
 
-    def set_nombre(self, nuevo_nombre):
+    def set_nombre(self, nombre):
         """Cambia el nombre. Lanza ValueError si está vacío."""
-        if nuevo_nombre.strip() !="":
-            self._nombre = nuevo_nombre
+        if nombre.strip() !="":
+            self._nombre = nombre
         else:
             raise ValueError("El nuevo nombre no puede estar vacío")
 
-    def set_numero_creditos(self, nuevo_numero_creditos):
+    def set_numero_creditos(self, numero_creditos):
         """Cambia los créditos. Lanza ValueError si no son mayores que cero."""
-        if nuevo_numero_creditos > 0:
-            self._numero_creditos = nuevo_numero_creditos
+        if numero_creditos > 0:
+            self._numero_creditos = numero_creditos
         else:
             raise ValueError("El numero de creditos debe ser mayor a cero")
 
-    def set_programa(self, nuevo_programa):
+    def set_programa(self, programa):
         """Cambia el programa. Lanza ValueError si no es un objeto ProgramaAcademico."""
-        if isinstance(nuevo_programa, ProgramaAcademico):
-            self._programa = nuevo_programa
+        if isinstance(programa, ProgramaAcademico):
+            self._programa = programa
         else:
             raise ValueError("El programa debe ser un ProgramaAcademico válido")
 
