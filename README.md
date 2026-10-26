@@ -1,6 +1,8 @@
-# Sistema de la comunidad académica de la universidad
+# Sistema de gestión académica de la universidad
 
-Proyecto en Python que organiza la información básica de una universidad: sus personas (estudiantes, docentes y administrativos), sus programas académicos y sus asignaturas.
+Proyecto en Python que organiza la información de una universidad: sus personas (estudiantes, docentes y administrativos), sus programas académicos, sus asignaturas y, desde la Actividad Colaborativa 2, la oferta de grupos académicos y la matrícula de estudiantes.
+
+Este repositorio contiene un único proyecto que evoluciona entre actividades. La versión de la Actividad Colaborativa 1 permanece identificable con la etiqueta `entrega-1`.
 
 ## Integrantes
 
@@ -8,41 +10,40 @@ Proyecto en Python que organiza la información básica de una universidad: sus 
 
 ## Descripción general del sistema
 
-La universidad administraba estos datos en registros separados. Este sistema los reúne en un único proyecto orientado a objetos.
-
-- **Persona** guarda lo que todas las personas comparten: identificación, nombre y email.
-- **Estudiante**, **Docente** y **Administrativo** son tipos particulares de persona, cada uno con sus propios datos.
+- **Persona** es una clase abstracta: guarda lo que todas las personas comparten (identificación, nombre y email) y define el método abstracto `realizar_actividad_principal()`.
+- **Estudiante**, **Docente** y **Administrativo** son los tipos concretos de persona, cada uno con sus propios datos.
 - **Empleado** agrupa lo que comparten docentes y administrativos: el número de empleado.
 - **ProgramaAcademico** guarda código, nombre, facultad y número de semestres.
-- **Asignatura** guarda código, nombre, créditos y el programa académico al que pertenece.
+- **Asignatura** guarda código, nombre, créditos y el objeto `ProgramaAcademico` al que pertenece.
+- **Horario** representa cuándo y dónde se desarrolla un grupo: día, hora de inicio, hora de fin y salón.
+- **GrupoAcademico** representa una oferta de una asignatura: código, objeto `Asignatura`, objeto `Docente` responsable, capacidad máxima, objeto `Horario` y la lista de objetos `Estudiante` matriculados.
+- **Catalogo** guarda las asignaturas y los programas para poder buscarlos por código.
+- **excepciones.py** define las excepciones personalizadas del sistema.
 
-Todos los atributos son privados (encapsulamiento). Se consultan con métodos `get_...` y se modifican con métodos `set_...`, que validan el valor y lanzan un `ValueError` si no es válido:
-
-- El email, la identificación, el nombre y los demás textos no pueden quedar vacíos ni contener solo espacios.
-- El número de semestres de un programa debe ser mayor que cero.
-- El número de créditos de una asignatura debe ser mayor que cero.
-- El semestre de un estudiante debe ser mayor que cero y su promedio debe estar entre 0 y 5.
-- Las horas semanales de un docente deben ser mayores que cero.
-- El programa de un estudiante o de una asignatura debe ser un objeto `ProgramaAcademico`.
+Todos los atributos son privados (encapsulamiento). Se consultan con métodos `get_...` y se modifican con métodos `set_...`, que validan el valor y lanzan un `ValueError` si no es válido.
 
 ## Diagrama de clases
 
 ![Diagrama de clases](docs/diagrama_de_clases.png)
 
-El archivo editable (`docs/diagrama_de_clases.drawio`) se abre con [draw.io](https://app.diagrams.net).
+El diagrama corresponde a la versión de la Actividad Colaborativa 1. El archivo editable (`docs/diagrama_de_clases.drawio`) se abre con [draw.io](https://app.diagrams.net).
 
 ## Estructura de los archivos
 
 ```
-proyecto_universidad/
+Proyecto_Universidad/
 ├── main.py                  # Programa principal: crea objetos y ejecuta las pruebas
-├── persona.py               # Clase Persona (clase base)
+├── persona.py               # Clase abstracta Persona
 ├── empleado.py              # Clase Empleado (hereda de Persona)
 ├── estudiante.py            # Clase Estudiante (hereda de Persona)
 ├── docente.py               # Clase Docente (hereda de Empleado)
 ├── administrativo.py        # Clase Administrativo (hereda de Empleado)
 ├── programa_academico.py    # Clase ProgramaAcademico
 ├── asignatura.py            # Clase Asignatura
+├── horario.py               # Clase Horario
+├── grupo_academico.py       # Clase GrupoAcademico
+├── catalogo.py              # Clase Catalogo (búsqueda de asignaturas y programas)
+├── excepciones.py           # Excepciones personalizadas
 ├── docs/
 │   ├── diagrama_de_clases.drawio
 │   └── diagrama_de_clases.png
@@ -65,53 +66,81 @@ proyecto_universidad/
    python main.py
    ```
 
-Al ejecutarlo, `main.py` demuestra:
+## Qué demuestra `main.py`
 
-1. La creación de programas académicos y una asignatura.
-2. La creación de seis personas (dos estudiantes, dos docentes y dos administrativos) en una única lista.
-3. La consulta de la información de los objetos.
-4. La modificación válida de datos encapsulados (el email de un estudiante y el cargo de un administrativo).
-5. Tres intentos de asignar valores inválidos (email vacío, semestres en 0 y créditos negativos), capturados con `try` / `except`.
-6. La presentación particular de cada tipo de persona.
-7. El recorrido polimórfico de la lista con un único ciclo `for`.
+**Actividad Colaborativa 1:** creación de programas y una asignatura, seis personas en una única lista, consulta de información, modificación válida de datos, tres intentos de valores inválidos y el recorrido polimórfico de la lista con un único ciclo `for`.
+
+**Actividad Colaborativa 2:**
+
+1. Que no se puede crear directamente una `Persona`.
+2. La creación de asignaturas, docentes, estudiantes y horarios.
+3. La creación de dos grupos académicos.
+4. La matrícula correcta de estudiantes.
+5. El intento de matricular un estudiante duplicado.
+6. El intento de superar la capacidad de un grupo.
+7. El retiro correcto de un estudiante.
+8. El intento de retirar un estudiante que no está matriculado.
+9. La búsqueda de una asignatura inexistente.
+10. La búsqueda de un programa inexistente.
+11. La continuidad del programa después de controlar cada excepción.
+
+## Clase abstracta
+
+`Persona` hereda de `ABC` y su método `realizar_actividad_principal()` está decorado con `@abstractmethod`. Una persona sin tipo (que no sea estudiante, docente ni administrativo) no tiene sentido en el sistema, así que Python impide crear objetos de `Persona` directamente y lanza un `TypeError`. `Estudiante`, `Docente` y `Administrativo` implementan el método con su propio comportamiento:
+
+- `Estudiante` informa qué programa cursa y en qué semestre está.
+- `Docente` informa en qué facultad orienta clases.
+- `Administrativo` informa qué cargo desempeña y en qué dependencia trabaja.
+
+`Empleado` no implementa el método, por lo que también es abstracta y nunca se crea directamente.
 
 ## Herencia, sobreescritura y polimorfismo
 
-### Herencia
-
-`Persona` es la clase base y reúne lo común: identificación, nombre, email y sus métodos. `Estudiante` hereda directamente de `Persona`. `Docente` y `Administrativo` comparten además un número de empleado, así que se creó la clase intermedia `Empleado`, que hereda de `Persona`, y de ella heredan `Docente` y `Administrativo`. De esta forma ningún atributo común se repite. Cada clase hija llama a `super().__init__(...)` para que el constructor de su clase madre guarde los datos generales y solo agrega lo propio.
+**Herencia.** `Estudiante` hereda de `Persona`. `Docente` y `Administrativo` comparten el número de empleado, por lo que heredan de la clase intermedia `Empleado`, que hereda de `Persona`. Cada clase hija llama a `super().__init__(...)` para que su clase madre guarde los datos generales.
 
 ```
-Persona
+Persona (abstracta)
 ├── Estudiante
 └── Empleado
     ├── Docente
     └── Administrativo
 ```
 
-### Sobreescritura
+**Sobreescritura.** Las clases hijas redefinen `mostrar_informacion()` (llamando primero a `super().mostrar_informacion()`) y `realizar_actividad_principal()`, con el mismo nombre y un comportamiento propio.
 
-Las clases hijas redefinen métodos de su clase madre con el mismo nombre pero con un comportamiento propio:
+**Polimorfismo.** En `main.py` los seis objetos viven en una sola lista que se recorre con un único ciclo `for`. En cada vuelta se llama a `mostrar_informacion()` y a `realizar_actividad_principal()` sin preguntar el tipo del objeto. Este comportamiento se mantiene en esta versión: la clase `Persona` sigue siendo la clase base común, y `GrupoAcademico` recibe docentes y estudiantes que siguen respondiendo a los mismos métodos.
 
-- `mostrar_informacion()`: cada hija llama primero a `super().mostrar_informacion()` para mostrar los datos de su madre y luego imprime sus datos particulares.
-- `realizar_actividad_principal()`: en `Persona` muestra un mensaje general. `Estudiante` informa el programa que cursa y su semestre, `Docente` informa la facultad donde orienta clases y `Administrativo` informa su cargo y su dependencia.
+## Relación entre el grupo académico y el horario
 
-### Polimorfismo
+`GrupoAcademico` contiene un objeto `Horario` en su atributo `_horario`. Es una relación de **composición** ("un grupo *tiene un* horario") y no de herencia, por estas razones:
 
-En `main.py` los seis objetos viven en una sola lista y se recorren con un único ciclo `for`. En cada vuelta se llama a `mostrar_informacion()` y a `realizar_actividad_principal()` sin preguntar de qué tipo es el objeto: Python ejecuta automáticamente la versión que corresponde a su clase real. No hay ciclos por tipo, ni condicionales para distinguir las clases, ni llamadas manuales objeto por objeto.
+- **No cumple la regla "es un".** Un grupo no es un tipo de horario, ni un horario es un tipo de grupo. Con herencia, un grupo recibiría los atributos y métodos de un horario sin que eso tenga sentido.
+- **Cada clase tiene su propia responsabilidad.** `Horario` solo sabe describir cuándo y dónde se reúne un grupo (día, hora de inicio, hora de fin y salón) y valida sus datos. `GrupoAcademico` se encarga de la matrícula.
+- **El horario describe a un grupo concreto.** No tiene sentido por sí solo: existe para decir cuándo y dónde se desarrolla ese grupo.
+- **Se representa con objetos, no con texto.** En lugar de guardar una cadena como `"Lunes 8-10 Salón 203"`, el grupo guarda un objeto `Horario` que valida cada dato y permite consultarlos por separado.
 
-```python
-for persona in personas:
-    persona.mostrar_informacion()
-    persona.realizar_actividad_principal()
-```
+El grupo también guarda objetos `Asignatura` y `Docente`, y una lista de objetos `Estudiante`, y no solo sus nombres o códigos como textos aislados.
+
+## Excepciones personalizadas
+
+Todas están definidas en `excepciones.py`, como clases que heredan de `Exception`.
+
+| Excepción | Situación que controla | Dónde se lanza | Dónde se captura |
+|---|---|---|---|
+| `EstudianteYaMatriculadoError` | El estudiante ya está matriculado en el grupo | `GrupoAcademico.matricular_estudiante()` | `main.py` |
+| `GrupoLlenoError` | El grupo alcanzó su capacidad máxima | `GrupoAcademico.matricular_estudiante()` | `main.py` |
+| `EstudianteNoMatriculadoError` | El estudiante que se quiere retirar no está matriculado | `GrupoAcademico.retirar_estudiante()` | `main.py` |
+| `AsignaturaNoEncontradaError` | La asignatura buscada no existe | `Catalogo.buscar_asignatura()` | `main.py` |
+| `ProgramaNoEncontradoError` | El programa académico buscado no existe | `Catalogo.buscar_programa()` | `main.py` |
+
+Cada una se captura en `main.py` con `try` / `except`, muestra un mensaje comprensible y permite que el programa continúe.
 
 ## Uso de herramientas de inteligencia artificial
 
 Se utilizó Claude (Anthropic) como apoyo y tutor durante el desarrollo del proyecto. Su uso consistió en:
 
 - Guiar el diseño mediante preguntas (identificación de clases, relaciones y diagrama).
-- Explicar conceptos de encapsulamiento, herencia, sobreescritura y polimorfismo.
+- Explicar conceptos de encapsulamiento, herencia, sobreescritura, polimorfismo, clases abstractas, composición y excepciones personalizadas.
 - Revisar errores del código y sugerir correcciones puntuales.
 - Generar algunos fragmentos de código, la documentación (docstrings) y la redacción de este README.
 
